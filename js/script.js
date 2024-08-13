@@ -1,6 +1,7 @@
 // Sample data structure
 let habits = [];
 let theme = 'light';
+let reminderInterval;
 
 // Helper function to load content
 function loadContent(content) {
@@ -36,11 +37,12 @@ function loadHabits() {
                 ${categories.map(category => `<option value="${category}">${category}</option>`).join('')}
             </select>
             <button onclick="addHabit()">Add Habit</button>
-            <ul id="habitList"></ul>
+            <ul id="habitList" class="sortable"></ul>
         </div>
     `;
     loadContent(habitsContent);
     displayHabits();
+    makeSortable();
 }
 
 // Function to add a habit
@@ -55,7 +57,8 @@ function addHabit() {
             name: newHabit,
             category: category,
             completed: 0,
-            streak: 0
+            streak: 0,
+            lastCompleted: null
         });
         habitInput.value = '';
         displayHabits();
@@ -67,29 +70,56 @@ function addHabit() {
 function displayHabits() {
     const habitList = document.getElementById('habitList');
     habitList.innerHTML = habits.map((habit, index) => `
-        <li>
-            <strong>${habit.name}</strong> (${habit.category})
-            <p>Streak: ${habit.streak} days</p>
-            <p>Completed: ${habit.completed} times</p>
-            <button onclick="completeHabit(${index})">Complete</button>
-            <button onclick="removeHabit(${index})">Remove</button>
+        <li class="habit-item" data-index="${index}">
+            <div class="habit-info">
+                <strong>${habit.name}</strong> (${habit.category})
+                <p>Streak: ${habit.streak} days</p>
+                <p>Completed: ${habit.completed} times</p>
+                <p>Last Completed: ${habit.lastCompleted ? new Date(habit.lastCompleted).toLocaleDateString() : 'Never'}</p>
+            </div>
+            <div class="habit-actions">
+                <button onclick="completeHabit(${index})">Complete</button>
+                <button onclick="editHabit(${index})">Edit</button>
+                <button onclick="removeHabit(${index})">Remove</button>
+            </div>
         </li>
     `).join('');
 }
 
 // Function to complete a habit
 function completeHabit(index) {
-    habits[index].completed++;
-    habits[index].streak++;
+    const today = new Date().toDateString();
+    const habit = habits[index];
+
+    if (habit.lastCompleted === today) {
+        alert('You have already completed this habit today.');
+        return;
+    }
+
+    habit.completed++;
+    habit.streak = habit.lastCompleted === new Date(today).setDate(new Date(today).getDate() - 1).toDateString() ? habit.streak + 1 : 1;
+    habit.lastCompleted = today;
     displayHabits();
     saveHabits();
 }
 
+// Function to edit a habit
+function editHabit(index) {
+    const newHabitName = prompt('Edit habit name:', habits[index].name);
+    if (newHabitName) {
+        habits[index].name = newHabitName.trim();
+        displayHabits();
+        saveHabits();
+    }
+}
+
 // Function to remove a habit
 function removeHabit(index) {
-    habits.splice(index, 1);
-    displayHabits();
-    saveHabits();
+    if (confirm("Are you sure you want to remove this habit?")) {
+        habits.splice(index, 1);
+        displayHabits();
+        saveHabits();
+    }
 }
 
 // Function to save habits to localStorage
@@ -146,6 +176,7 @@ function loadSettings() {
             <h2>Settings</h2>
             <p>Customize your tracker settings here.</p>
             <button onclick="resetHabits()">Reset All Habits</button>
+            <button onclick="setReminders()">Set Daily Reminders</button>
         </div>
     `;
     loadContent(settingsContent);
@@ -158,6 +189,85 @@ function resetHabits() {
         saveHabits();
         loadHabits();
     }
+}
+
+// Function to set daily reminders
+function setReminders() {
+    const reminderTime = prompt("Enter the time for daily reminders (e.g., 18:00):");
+    if (reminderTime) {
+        const [hours, minutes] = reminderTime.split(':').map(Number);
+        const now = new Date();
+        let firstReminder = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
+
+        if (firstReminder < now) {
+            firstReminder.setDate(firstReminder.getDate() + 1);
+        }
+
+        const timeUntilFirstReminder = firstReminder - now;
+
+        clearTimeout(reminderInterval);
+        reminderInterval = setTimeout(() => {
+            alert("It's time to review your habits!");
+            reminderInterval = setInterval(() => {
+                alert("It's time to review your habits!");
+            }, 24 * 60 * 60 * 1000);
+        }, timeUntilFirstReminder);
+    }
+}
+
+// Function to make the habits list sortable
+function makeSortable() {
+    const sortableList = document.querySelector('.sortable');
+    let draggedItem;
+
+    sortableList.addEventListener('dragstart', function (e) {
+        draggedItem = e.target;
+        setTimeout(() => {
+            draggedItem.style.display = 'none';
+        }, 0);
+    });
+
+    sortableList.addEventListener('dragend', function (e) {
+        setTimeout(() => {
+            draggedItem.style.display = 'block';
+            draggedItem = null;
+        }, 0);
+    });
+
+    sortableList.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    });
+
+    sortableList.addEventListener('dragenter', function (e) {
+        e.preventDefault();
+        if (e.target.className === 'habit-item') {
+            e.target.style.borderBottom = '2px solid #4CAF50';
+        }
+    });
+
+    sortableList.addEventListener('dragleave', function (e) {
+        if (e.target.className === 'habit-item') {
+            e.target.style.borderBottom = '';
+        }
+    });
+
+    sortableList.addEventListener('drop', function (e) {
+        if (e.target.className === 'habit-item') {
+            e.target.style.borderBottom = '';
+            sortableList.insertBefore(draggedItem, e.target.nextSibling);
+            reorderHabits();
+            saveHabits();
+        }
+    });
+}
+
+// Function to reorder habits in the array
+function reorderHabits() {
+    const habitItems = document.querySelectorAll('.habit-item');
+    habits = Array.from(habitItems).map(item => {
+        const index = item.getAttribute('data-index');
+        return habits[index];
+    });
 }
 
 // Initialize app
