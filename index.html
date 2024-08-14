@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Habits Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.js" integrity="sha512-7DgGWBKHddtgZ9Cgu8aGfJXvgcVv4SWSESomRtghob4k4orCBUTSRQ4s5SaC2Rz+OptMqNk0aHHsaUBk6fzIXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1> Habits Tracker</h1>
-            <div class="theme-switcher">
-                <label for="theme">Theme:</label>
-                <select id="theme">
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                </select>
-            </div>
-        </header>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+        <h1>Habits Tracker</h1>
         <nav>
             <ul>
                 <li><a href="#" id="dashboardLink">Dashboard</a></li>
@@ -26,10 +22,45 @@
                 <li><a href="#" id="settingsLink">Settings</a></li>
             </ul>
         </nav>
-        <main id="mainContent">
-            <!-- Main content will be loaded dynamically -->
-        </main>
+        <div class="theme-switcher">
+            <label for="theme">Theme:</label>
+            <select id="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="content">
+        <!-- Content dynamically loaded here -->
+    </main>
+
+    <!-- Habit Edit Modal -->
+   <!-- Modal Structure -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h2>Edit Habit</h2>
+        <form id="habitForm">
+            <!-- Form fields for habit editing -->
+            <input type="hidden" id="habitId">
+            <label for="habitName">Habit Name:</label>
+            <input type="text" id="habitName" name="habitName">
+            <label for="habitCategory">Category:</label>
+            <input type="text" id="habitCategory" name="habitCategory">
+            <label for="habitStreak">Streak:</label>
+            <input type="number" id="habitStreak" name="habitStreak">
+            <button type="submit">Save</button>
+        </form>
     </div>
+</div>
+
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- Modal Overlay -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="/js/script.js"></script>
 </body>
 </html>

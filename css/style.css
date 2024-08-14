@@ -1,186 +1,269 @@
-/* General Styles */
-body {
-    font-family: 'Roboto', sans-serif;
+/* Resetting default styles */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.3s, color 0.3s;
 }
 
-body.light {
-    background-color: #f5f7fa;
-    color: #333;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-dark);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
 }
 
-body.dark {
-    background-color: #1f1f1f;
-    color: #f0f0f0;
+/* Color Variables */
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #333;
+    --bg-color-light: #f7f7f7;
+    --bg-color-dark: #121212;
+    --text-color-light: #fff;
+    --text-color-dark: #333;
+    --accent-color: #FF5722;
 }
 
-.container {
+/* Sidebar */
+#sidebar {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    width: 250px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-}
-
-header {
-    background: linear-gradient(135deg, #4CAF50, #66bb6a);
-    color: white;
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 15px 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-nav {
-    background-color: #333;
-    color: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
-    margin: 1rem 2rem;
+#sidebar h1 {
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    text-transform: uppercase;
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
+#sidebar nav ul {
+    list-style-type: none;
+    width: 100%;
 }
 
-nav ul li {
-    margin: 0;
+#sidebar nav ul li {
+    margin-bottom: 15px;
 }
 
-nav ul li a {
-    color: white;
+#sidebar nav ul li a {
     text-decoration: none;
-    padding: 0.75rem 1.5rem;
+    color: var(--text-color-light);
+    font-size: 1.2em;
     display: block;
-    border-radius: 25px;
-    transition: background-color 0.3s, transform 0.3s;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-nav ul li a:hover {
-    background-color: #4CAF50;
-    transform: scale(1.05);
-}
-
-main {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-    background: linear-gradient(to right, #e0eafc, #cfdef3);
-    border-radius: 15px;
-    margin: 1rem 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.card {
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-    margin: 1rem 0;
-    padding: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-}
-
-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1rem;
-    margin: 0.5rem 0;
-    cursor: pointer;
-    border-radius: 25px;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-.progress-bar {
-    background-color: #f0f0f0;
-    height: 25px;
-    border-radius: 15px;
-    margin-top: 10px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #76c7c0);
-    width: 0;
-    border-radius: 15px;
-    transition: width 0.6s ease;
+#sidebar nav ul li a:hover {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
 }
 
 .theme-switcher {
+    margin-top: auto;
+    padding-top: 20px;
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
 .theme-switcher label {
     margin-right: 10px;
-    color: white;
+    color: var(--text-color-light);
 }
 
-.theme-switcher select {
-    padding: 0.3rem;
-    border-radius: 25px;
-    border: none;
-    background-color: #66bb6a;
-    color: white;
+/* Main Content Area */
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: var(--bg-color-light);
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: var(--secondary-color);
+}
+
+.card p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: var(--secondary-color);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+/* Habit List */
+.habit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.theme-switcher select:hover {
-    background-color: #4CAF50;
+.habit-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.habit-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.habit-info strong {
+    font-size: 1.2em;
+    color: var(--secondary-color);
+}
+
+.habit-info p {
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+
+.habit-actions button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.habit-actions button:hover {
+    background-color: var(--primary-color);
+}
+
+/* Modal Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    nav ul {
+    #sidebar {
+        width: 200px;
+    }
+
+    .card h2 {
+        font-size: 1.2em;
+    }
+
+    .habit-item {
         flex-direction: column;
+        align-items: flex-start;
     }
 
-    nav ul li a {
-        text-align: center;
-        padding: 1rem;
+    .habit-actions button {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #sidebar {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    header {
-        flex-direction: column;
-        text-align: center;
+    .theme-switcher {
+        margin-top: 10px;
+        padding-top: 10px;
     }
 
-    main {
-        margin: 1rem;
-        padding: 1rem;
-    }
-
-    .card {
-        margin: 0.5rem 0;
-    }
-
-    button {
-        padding: 0.5rem 1rem;
+    .content {
+        padding-top: 80px;
     }
 }
